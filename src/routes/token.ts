@@ -12,7 +12,7 @@ router.post('/token', async (req, res) => {
     return res.status(404).json({ error: 'Workspace not found' });
   }
 
-  const SECRET_KEY = 'YOUR_SECRET_KEY';
+  const SECRET_KEY = process.env.JWT_SECRET; 
   const generateToken = (payload: any, expiresIn: string = '1h') => {
     return jwt.sign(payload, SECRET_KEY, { expiresIn });
 };

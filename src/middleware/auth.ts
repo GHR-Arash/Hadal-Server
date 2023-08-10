@@ -2,7 +2,7 @@ import { Request,Response,NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 
-const SECRET_KEY = 'YOUR_SECRET_KEY';  // Same secret key used for signing
+const SECRET_KEY = process.env.JWT_SECRET;  // Same secret key used for signing
 
 const verifyToken = (token: string) => {
     try {
