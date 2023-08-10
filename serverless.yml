@@ -20,18 +20,18 @@ functions:
           method: ANY
           cors: true
   processQueue:
-    handler: src/handlers.processQueue
+    handler: src/handlers.processTaskQueue
     events:
       - sqs:
           arn:
             Fn::GetAtt:
-              - SetValueInitiatedQueue
+              - TaskQueue
               - Arn
           batchSize: 5
 
 resources:
   Resources:
-    SetValueInitiatedQueue:
+    TaskQueue:
       Type: AWS::SQS::Queue
 
     TasksDynamoDBTable:

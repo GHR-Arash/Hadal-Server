@@ -3,7 +3,7 @@ import { DynamoDB } from 'aws-sdk';
 
 const dynamoDB = new DynamoDB.DocumentClient();
 
-export const processQueue = async (event: SQSEvent) => {
+export const processTaskQueue = async (event: SQSEvent) => {
     for (const record of event.Records) {
         const body = JSON.parse(record.body);
 
