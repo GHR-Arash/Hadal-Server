@@ -15,9 +15,9 @@ router.get('/getData', authenticate, async (req:Request, res:Response) => {
     }
 
     if (task.State === "Completed") {
-        return res.json({ value: task.Value });
+        return res.json({State:"Completed", value: task.Value });
     } else if (["InProgress", "Initiated"].includes(task.State)) {
-        return res.json({ value: "" });
+        return res.json({ State:task.State,value: "" });
     } else {
         return res.status(500).json({ error: 'Unexpected task state' });
     }
