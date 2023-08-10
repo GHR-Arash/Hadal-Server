@@ -8,40 +8,17 @@ provider:
     JWT_SECRET: your-jwt-secret # Store this securely, consider using AWS Secrets Manager or SSM Parameter Store
 
 functions:
-  getToken:
-    handler: src/handlers.getToken
+  app:
+    handler: src/index.handler
     events:
       - http:
-          path: token
-          method: post
+          path: /
+          method: ANY
           cors: true
-
-  setData:
-    handler: src/handlers.setData
-    events:
       - http:
-          path: setData
-          method: post
+          path: /{proxy+}
+          method: ANY
           cors: true
-          authorizer:
-            name: jwtAuthorizer
-            arn: arn:aws:cognito-idp:us-east-1:xxxxxx:userpool/us-east-1_xxxxxx
-            claims:
-              - workspaceId
-
-  getData:
-    handler: src/handlers.getData
-    events:
-      - http:
-          path: getData
-          method: get
-          cors: true
-          authorizer:
-            name: jwtAuthorizer
-            arn: arn:aws:cognito-idp:us-east-1:xxxxxx:userpool/us-east-1_xxxxxx
-            claims:
-              - workspaceId
-
   processQueue:
     handler: src/handlers.processQueue
     events:

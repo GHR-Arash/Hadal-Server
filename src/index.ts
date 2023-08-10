@@ -3,6 +3,7 @@ import serverless from 'serverless-http';
 import tokenRouter from './routes/token';
 import setDataRouter from './routes/setData';
 import getDataRouter from './routes/getData';
+import serverlessHttp from 'serverless-http';
 
 const app = express();
 
