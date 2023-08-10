@@ -1,0 +1,94 @@
+service: your-service-name
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  environment:
+    JWT_SECRET: your-jwt-secret # Store this securely, consider using AWS Secrets Manager or SSM Parameter Store
+
+functions:
+  getToken:
+    handler: src/handlers.getToken
+    events:
+      - http:
+          path: token
+          method: post
+          cors: true
+
+  setData:
+    handler: src/handlers.setData
+    events:
+      - http:
+          path: setData
+          method: post
+          cors: true
+          authorizer:
+            name: jwtAuthorizer
+            arn: arn:aws:cognito-idp:us-east-1:xxxxxx:userpool/us-east-1_xxxxxx
+            claims:
+              - workspaceId
+
+  getData:
+    handler: src/handlers.getData
+    events:
+      - http:
+          path: getData
+          method: get
+          cors: true
+          authorizer:
+            name: jwtAuthorizer
+            arn: arn:aws:cognito-idp:us-east-1:xxxxxx:userpool/us-east-1_xxxxxx
+            claims:
+              - workspaceId
+
+  processQueue:
+    handler: src/handlers.processQueue
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - SetValueInitiatedQueue
+              - Arn
+          batchSize: 5
+
+resources:
+  Resources:
+    SetValueInitiatedQueue:
+      Type: AWS::SQS::Queue
+
+    TasksDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Tasks
+        AttributeDefinitions:
+          - AttributeName: workspaceId
+            AttributeType: S
+          - AttributeName: externalId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: workspaceId
+            KeyType: HASH
+          - AttributeName: externalId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    WorkspacesDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Workspaces
+        AttributeDefinitions:
+          - AttributeName: apiAccessKey
+            AttributeType: S
+        KeySchema:
+          - AttributeName: apiAccessKey
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-offline
+
