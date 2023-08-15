@@ -18,16 +18,16 @@ export const processTaskQueue = async (event: SQSEvent) => {
         const smartContract = await getSmartContractByWorkspaceId(workspaceId);
 
         if (smartContract) {
-            // Call the smart contract's setValue function
+            
             await callSetValueOnSmartContract(smartContract.contractAddress, metadata.key,metadata.value);
         } else {
-            // Deploy a new smart contract
+            
             const deployedContractAddress = await deploySmartContract();
 
-            // Store the smart contract's metadata in the database
+          
             await storeSmartContractMetadata(workspaceId, deployedContractAddress);
 
-            // Call the smart contract's setValue function
+            
             await callSetValueOnSmartContract(deployedContractAddress, metadata.key,metadata.value);
         }
 
@@ -68,10 +68,10 @@ const getSmartContractByWorkspaceId = async (workspaceId: string): Promise<Smart
 
 
 const callSetValueOnSmartContract = async (contractAddress: string, key: string, value: string) => {
-    // Load the ABI of the compiled smart contract from disk
+    
     const abi = JSON.parse(fs.readFileSync('../../smart-contracts/DataVault.abi', 'utf8'));
 
-    // Set up a provider using Infura
+    
     const provider = new providers.JsonRpcProvider('https://mainnet.infura.io/v3/INFURA_PROJECT_ID');
 
     const privateKey = 'PRIVATE_KEY';
@@ -82,10 +82,10 @@ const callSetValueOnSmartContract = async (contractAddress: string, key: string,
 
     const contractInstance = new ethers.Contract(contractAddress, abi, connectedWallet);
 
-    // Call the setValue function on the contract instance
+    
     const tx = await contractInstance.setValue(key, value);
 
-    // Wait for the transaction to be mined
+   
     const receipt = await tx.wait();
 
     return receipt;
@@ -121,7 +121,7 @@ const deploySmartContract = async ():Promise<string>=> {
 
 const storeSmartContractMetadata = async (workspaceId: string, contractAddress: string) => {
     const params = {
-        TableName: 'SmartContractTable', // Name of your DynamoDB table
+        TableName: 'SmartContractTable', 
         Item: {
             workspaceId: workspaceId,
             contractAddress: contractAddress,
