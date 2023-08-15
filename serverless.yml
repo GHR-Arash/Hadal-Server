@@ -66,6 +66,28 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
+    SmartContractDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: SmartContracts
+        AttributeDefinitions:
+          - AttributeName: workspaceId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: workspaceId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        AttributeDefinitions:
+          - AttributeName: workspaceId
+            AttributeType: S
+          - AttributeName: DeployedTime
+            AttributeType: S
+          - AttributeName: Address
+            AttributeType: S
+   
+
 plugins:
   - serverless-offline
 
