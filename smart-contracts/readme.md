@@ -67,7 +67,7 @@ This repository contains the `DataVault` smart contract and its associated unit 
      `
 ## Important Notes
   
-- **Gas Costs**: Running tests or deploying contracts on public networks (like Polygon) will cost gas. Ensure you have enough MATIC in your wallet.
+- **Gas Costs**: Running tests or deploying contracts on polygon mumbai will cost gas. Ensure you have enough MATIC in your wallet.
 
 
 ```
