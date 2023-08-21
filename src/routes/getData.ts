@@ -4,7 +4,7 @@ import { getTaskByWorkspaceAndExternalId } from '../database/dynamo';
 
 const router = express.Router();
 
-router.get('/getData', authenticate, async (req:Request, res:Response) => {
+router.get('/', authenticate, async (req:Request, res:Response) => {
     const { externalId } = req.query;
     const workspaceId = req.workspaceId;
 

@@ -3,6 +3,9 @@ const HDWalletProvider = require("@truffle/hdwallet-provider");
 const infuraKey = "d7867e69855b48a48f3c4c8d712e0c13";
 const mnemonic = "match crash fortune chimney damage top print frequent square stomach device choice";
 module.exports = {
+  dashboard: {
+    port: 24012,
+  },
   networks: {
     polygon: {
         provider: () => new HDWalletProvider(mnemonic, `https://polygon-mumbai.infura.io/v3/${infuraKey}`),

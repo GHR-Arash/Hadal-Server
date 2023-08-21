@@ -1,5 +1,16 @@
 service: your-service-name
 
+custom:
+  localstack:
+    stages:
+      - local
+    host: http://localhost
+    edgePort: 4566
+    autostart: false  # Optional - if you want to start localstack with a serverless command
+  scriptHooks:
+    after:deploy:deploy: seedDynamoDB.bat
+    #after:deploy:deploy: ./seedDynamoDB.sh
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -20,7 +31,7 @@ functions:
           method: ANY
           cors: true
   processQueue:
-    handler: src/handlers.processTaskQueue
+    handler: src/handlers/handlers.processTaskQueue
     events:
       - sqs:
           arn:
@@ -73,24 +84,22 @@ resources:
         AttributeDefinitions:
           - AttributeName: workspaceId
             AttributeType: S
+          - AttributeName: Address
+            AttributeType: S
         KeySchema:
           - AttributeName: workspaceId
             KeyType: HASH
+          - AttributeName: Address
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        AttributeDefinitions:
-          - AttributeName: workspaceId
-            AttributeType: S
-          - AttributeName: DeployedTime
-            AttributeType: S
-          - AttributeName: Address
-            AttributeType: S
-   
 
 plugins:
-  - serverless-s3-local
+  - serverless-scriptable-plugin
   - serverless-webpack
+  - serverless-s3-local
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-localstack
 

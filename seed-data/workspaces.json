@@ -1,0 +1,21 @@
+{
+    "Workspaces": [
+      {
+        "PutRequest": {
+          "Item": {
+            "apiAccessKey": {"S": "YOUR_KEY_1"},
+            "workspaceId": {"S": "YOUR_WORKSPACE_ID_1"}
+          }
+        }
+      },
+      {
+        "PutRequest": {
+          "Item": {
+            "apiAccessKey": {"S": "YOUR_KEY_2"},
+            "workspaceId": {"S": "YOUR_WORKSPACE_ID_2"}
+          }
+        }
+      }
+    ]
+  }
+  

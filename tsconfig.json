@@ -16,7 +16,6 @@
   },
   "include": ["src/**/*.ts", "serverless.ts","typings/*"],
   "exclude": [
-    "node_modules/**/*",
     ".serverless/**/*",
     ".webpack/**/*",
     "_warmup/**/*",

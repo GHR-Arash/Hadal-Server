@@ -6,7 +6,7 @@ import AWS from 'aws-sdk';
 const router = express.Router();
 const sqs = new AWS.SQS();
 
-router.post('/setData', authenticate, async (req:Request, res:Response) => {
+router.post('/', authenticate, async (req:Request, res:Response) => {
     const { encryptedData, externalId } = req.body;
     const workspaceId = req.workspaceId;
 

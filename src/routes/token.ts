@@ -4,7 +4,7 @@ import { getWorkspaceById } from '../database/dynamo';
 
 const router = express.Router();
 
-router.post('/token', async (req, res) => {
+router.post('/', async (req, res) => {
   const { apiAccessKey } = req.body;
   const workspace = await getWorkspaceById(apiAccessKey);
 
