@@ -6,9 +6,12 @@
       "request": "attach",
       "name": "Attach to LocalStack",
       "port": 9229,
-      "sourceMaps": true,
+      "address": "localhost",
       "localRoot": "${workspaceFolder}",
-      "remoteRoot": "/var/task"
+      "remoteRoot": "/var/task",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     }
   ]
 }
