@@ -17,6 +17,7 @@ provider:
   region: us-east-1
   environment:
     JWT_SECRET: your-jwt-secret # Store this securely, consider using AWS Secrets Manager or SSM Parameter Store
+    RUNNING_ON_LOCALSTACK: true
 
 functions:
   app:
@@ -26,10 +27,12 @@ functions:
           path: /
           method: ANY
           cors: true
+          integration: LAMBDA_PROXY
       - http:
           path: /{proxy+}
           method: ANY
           cors: true
+          integration: LAMBDA_PROXY
   processQueue:
     handler: src/handlers/handlers.processTaskQueue
     events:
@@ -98,8 +101,5 @@ resources:
 plugins:
   - serverless-scriptable-plugin
   - serverless-webpack
-  - serverless-s3-local
-  - serverless-dynamodb-local
-  - serverless-offline
   - serverless-localstack
 

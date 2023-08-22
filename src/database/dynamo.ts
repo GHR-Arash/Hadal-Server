@@ -1,6 +1,21 @@
 import AWS from 'aws-sdk';
 
-const client = new AWS.DynamoDB.DocumentClient();
+//const client = new AWS.DynamoDB.DocumentClient();
+let options = {};
+
+// Check if we're running against LocalStack
+if (process.env.RUNNING_ON_LOCALSTACK) {
+  options = {
+    region: 'us-east-1',
+    endpoint: 'http://localhost:4566',
+    accessKeyId: 'test',  // Dummy credentials for LocalStack
+    secretAccessKey: 'test',
+    sslEnabled: false
+  };
+}
+
+const client = new AWS.DynamoDB.DocumentClient(options);
+
 
 export const getWorkspaceById = async (apiAccessKey: string) => {
   const params = {
