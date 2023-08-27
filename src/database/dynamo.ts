@@ -17,13 +17,20 @@ if (process.env.RUNNING_ON_LOCALSTACK) {
 const client = new AWS.DynamoDB.DocumentClient(options);
 
 
+
 export const getWorkspaceById = async (apiAccessKey: string) => {
   const params = {
     TableName: 'Workspaces',
-    Key: { apiAccessKey }
+    Key: { "S": apiAccessKey }
   };
-  return await client.get(params).promise();
+  
+  try {
+    return await client.get(params).promise();
+  } catch (error) {
+    console.error(error);
+  }
 };
+
 
 export const createTask = async (taskData: any) => {
   const params = {
