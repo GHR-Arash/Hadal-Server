@@ -13,13 +13,14 @@ const verifyToken = (token: string) => {
 };
 
 export const authenticate = (req: Request, res:Response, next: NextFunction) => {
-    const token = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    if (!authHeader) {
         return res.status(401).json({ error: 'No token provided' });
     }
 
     try {
+        const token = authHeader.split(" ")[1];
         const decoded = verifyToken(token);
         req.workspaceId = (decoded as any).workspaceId;  // or whatever payload you stored in the token
         next();

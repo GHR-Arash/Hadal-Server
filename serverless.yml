@@ -1,12 +1,21 @@
 service: your-service-name
 
 custom:
+  webpack:
+    keepOutputDirectory: false
   localstack:
+    debug: true
+    networks: # optional - attaches the list of networks to the localstack docker container after startup
+      - host
+      - overlay
+      - central_auth_dev
     stages:
       - local
     host: http://localhost
     edgePort: 4566
     autostart: false  # Optional - if you want to start localstack with a serverless command
+    lambda:
+      mountCode: false
   scriptHooks:
     after:deploy:deploy: seedDynamoDB.bat
     #after:deploy:deploy: ./seedDynamoDB.sh
@@ -22,6 +31,8 @@ provider:
 functions:
   app:
     handler: src/index.handler
+    timeout: 30 # Timeout in seconds
+    memorySize: 912 # Memory size in MB
     events:
       - http:
           path: /
