@@ -23,17 +23,23 @@ router.post('/', authenticate, async (req:Request, res:Response) => {
 
     await createTask(taskData);
     
-    const queueUrl = process.env.QUEUE_URL;
+    const isLocal = process.env.RUNNING_ON_LOCALSTACK || false;
+    const queueUrl = isLocal ? 
+        `http://${process.env.LOCALSTACK_HOSTNAME}:4566/000000000000/your-service-name-local-TaskQueue-2f45ef2c` : 
+        process.env.SQS_QUEUE_URL;
+
+    //const queueUrl = process.env.SQS_QUEUE_URL;
+    console.log(`sqs url is ${queueUrl}`);
 
     // Publish the "SetValueInitiated" event to AWS SQS
     const params = {
         MessageBody: JSON.stringify(taskData),
-        QueueUrl: 'YOUR_SQS_QUEUE_URL'  // Replace with your SQS Queue URL
+        QueueUrl: queueUrl  // Replace with your SQS Queue URL
     };
 
     sqs.sendMessage(params, (err, data) => {
         if (err) {
-            return res.status(500).json({ error: 'Failed to send message to SQS' });
+            return res.status(500).json({ error: `Failed to send message to SQS because ${err}` });
         }
         res.json({ RefrenceId: taskData.taskId });
     });

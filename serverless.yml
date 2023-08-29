@@ -17,7 +17,7 @@ custom:
     lambda:
       mountCode: false
   scriptHooks:
-    before:package:initialize: scripts/setEnv.js
+    #before:package:initialize: scripts/setEnv.js
     after:deploy:deploy: seedDynamoDB.bat
     #after:deploy:deploy: ./seedDynamoDB.sh
 
@@ -28,6 +28,8 @@ provider:
   environment:
     JWT_SECRET: your-jwt-secret # Store this securely, consider using AWS Secrets Manager or SSM Parameter Store
     RUNNING_ON_LOCALSTACK: true
+    SQS_QUEUE_URL:
+      Ref: TaskQueue  # This is assuming TaskQueue is the logical ID of your SQS queue in the CloudFormation resources section
 
 
 

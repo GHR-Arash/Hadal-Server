@@ -16,11 +16,11 @@ router.get('/', authenticate, async (req:Request, res:Response) => {
     if (!task) {
         return res.status(404).json({ error: 'Task not found' });
     }
-
-    if (task.State === "Completed") {
-        return res.json({State:"Completed", value: task.Value });
-    } else if (["InProgress", "Initiated"].includes(task.State)) {
-        return res.json({ State:task.State,value: "" });
+    console.log(`task state is : ${task.state}`)
+    if (task.state === "Completed") {
+        return res.json({State:"Completed", value: task.value });
+    } else if (["InProgress", "Initiated"].includes(task.state)) {
+        return res.json({ State:task.state,Value: "" });
     } else {
         return res.status(500).json({ error: 'Unexpected task state' });
     }
