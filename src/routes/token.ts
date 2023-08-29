@@ -23,8 +23,9 @@ router.post('/', async (req, res) => {
     const generateToken = (payload: any, expiresIn: string = '1h') => {
       return jwt.sign(payload, SECRET_KEY, { expiresIn });
   };
-  
-    const token = generateToken({ workspaceId: (workspace as any).workspaceId},'1h') ;
+    console.log(`workspace got form db : ${JSON.stringify(workspace)}`);
+    console.log(`workspaceID got form db : ${(workspace as any).Item.workspaceId}`);
+    const token = generateToken({ workspaceId: (workspace as any).Item.workspaceId},'1h') ;
     res.json({ token });
   }
 

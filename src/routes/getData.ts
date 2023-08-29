@@ -5,10 +5,13 @@ import { getTaskByWorkspaceAndExternalId } from '../database/dynamo';
 const router = express.Router();
 
 router.get('/', authenticate, async (req:Request, res:Response) => {
-    const { externalId } = req.query;
+    const { externalId, taskId } = req.query;
     const workspaceId = req.workspaceId;
 
-    const task = await getTaskByWorkspaceAndExternalId(workspaceId, externalId as string);
+    console.log(`externalId:${externalId}`);
+    console.log(`workspaceId:${workspaceId}`);
+
+    const task = await getTaskByWorkspaceAndExternalId(taskId as string , externalId as string,workspaceId);
 
     if (!task) {
         return res.status(404).json({ error: 'Task not found' });

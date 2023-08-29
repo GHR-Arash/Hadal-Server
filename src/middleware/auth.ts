@@ -22,6 +22,8 @@ export const authenticate = (req: Request, res:Response, next: NextFunction) => 
     try {
         const token = authHeader.split(" ")[1];
         const decoded = verifyToken(token);
+        console.log(`decode token:${JSON.stringify(decoded)}`);
+        console.log(`workspaceId:${(decoded as any).workspaceId}`);
         req.workspaceId = (decoded as any).workspaceId;  // or whatever payload you stored in the token
         next();
     } catch (error) {

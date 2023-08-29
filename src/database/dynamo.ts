@@ -61,17 +61,20 @@ export const createTask = async (taskData: any): Promise<any> => {
 };
 
 
-export const getTaskByWorkspaceAndExternalId = async (workspaceId: string, externalId: string) => {
-    const params = {
-        TableName: 'Tasks',
-        KeyConditionExpression: 'workspaceId = :wId AND externalId = :eId',
-        ExpressionAttributeValues: {
-            ':wId': workspaceId,
-            ':eId': externalId
-        }
-    };
+export const getTaskByWorkspaceAndExternalId = async (taskId: string, externalId: string,workspaceId) => {
+  const params = {
+    TableName: 'Tasks',
+    KeyConditionExpression: 'taskId = :tId AND externalId = :eId',
+    ExpressionAttributeValues: {
+        ':tId': taskId,
+        ':eId': externalId
+    }
+};
+    console.log('running query')
     const result = await client.query(params).promise();
+    if(result.Items[0] && result.Items[0].workspaceId==workspaceId)
     return result.Items[0];
+    else return null
 };
 
 // ... other database functions
