@@ -17,6 +17,7 @@ custom:
     lambda:
       mountCode: false
   scriptHooks:
+    before:package:initialize: scripts/setEnv.js
     after:deploy:deploy: seedDynamoDB.bat
     #after:deploy:deploy: ./seedDynamoDB.sh
 
@@ -27,6 +28,9 @@ provider:
   environment:
     JWT_SECRET: your-jwt-secret # Store this securely, consider using AWS Secrets Manager or SSM Parameter Store
     RUNNING_ON_LOCALSTACK: true
+
+
+
 
 functions:
   app:
@@ -64,12 +68,12 @@ resources:
       Properties:
         TableName: Tasks
         AttributeDefinitions:
-          - AttributeName: workspaceId
+          - AttributeName: taskId
             AttributeType: S
           - AttributeName: externalId
             AttributeType: S
         KeySchema:
-          - AttributeName: workspaceId
+          - AttributeName: taskId
             KeyType: HASH
           - AttributeName: externalId
             KeyType: RANGE

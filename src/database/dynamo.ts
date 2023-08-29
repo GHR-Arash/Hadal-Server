@@ -1,15 +1,15 @@
-console.log("Received a request for aws accoutn generation");
 import AWS from 'aws-sdk';
 
 // const client = new AWS.DynamoDB.DocumentClient();
 let client;
 let options = {};
+console.log(`localstack host name :${process.env.RUNNING_ON_LOCALSTACK}`)
 
 // Check if we're running against LocalStack
 if (process.env.RUNNING_ON_LOCALSTACK) {
   options = {
     region: 'us-east-1',
-    endpoint: 'http://172.19.0.2:4566',
+    endpoint: `${process.env.LOCALSTACK_HOSTNAME}:4566`,
     accessKeyId: 'test',  // Dummy credentials for LocalStack
     secretAccessKey: 'test',
     sslEnabled: false
@@ -35,6 +35,9 @@ export const getWorkspaceById = async (apiAccessKey: string) => {
   
   try {
     let result = await client.get(params).promise();
+    if (Object.keys(result).length === 0) {
+      return null;
+    }
     return result; 
   } catch (error) {
     console.error(`error in db connection ${error}`);
@@ -43,12 +46,18 @@ export const getWorkspaceById = async (apiAccessKey: string) => {
 };
 
 
-export const createTask = async (taskData: any) => {
-  const params = {
-    TableName: 'Tasks',
-    Item: taskData
-  };
-  return await client.put(params).promise();
+
+export const createTask = async (taskData: any): Promise<any> => {
+  console.log('create task function')
+  try {
+    const params = {
+      TableName: 'Tasks',
+      Item: taskData
+    };
+      await client.put(params).promise();
+  } catch (error) {
+    throw new Error(`Failed to create task: ${error.message}`);
+  }
 };
 
 

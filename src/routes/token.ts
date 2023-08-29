@@ -11,7 +11,6 @@ router.post('/', async (req, res) => {
 
 
   workspace = await getWorkspaceById(apiAccessKey);
-
   if (!workspace) {
     res.status(404).json({ 
       isBase64Encoded: false,
